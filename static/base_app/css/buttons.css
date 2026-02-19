@@ -1,53 +1,60 @@
+/* === Кнопки (стиль xxi-century.ru) === */
 input[type=submit] {
-    background-color: RGB(150, 150, 150);
-    color: white;
-    padding: 7px 10px;
+    background: var(--primary);
+    color: #fff;
+    padding: 9px 22px;
     border: none;
-    border-radius: 4px;
+    border-radius: 0;
     cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: background var(--transition), box-shadow var(--transition);
+    box-shadow: none;
 }
 
-input[type=submit]:hover, input[type=submit]:focus {
-    background-color: RGB(80, 75, 200);
+input[type=submit]:hover {
+    background: var(--primary-dark);
+    transform: none;
+    box-shadow: 0 4px 12px rgba(65,118,144,.40);
+}
+
+input[type=submit]:active {
+    background: var(--primary-dark);
+    box-shadow: none;
 }
 
 .span-button {
-    background-color: RGB(150, 150, 150);
-    color: white;
-    margin: 5px;
-    padding: 7px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
 }
 
-.span-button:hover {
-    background: RGB(80, 75, 200);
-}
-
-.span-button:active {
-    background: RGB(80, 75, 255);
+.span-button input[type=submit] {
+    margin: 0;
 }
 
 .anchor-button {
+    display: inline-block;
     text-decoration: none;
-    background-color: RGB(150, 150, 150);
-    color: white;
-    margin: 5px;
-    padding: 7px 10px;
-    border: none;
-    border-radius: 4px;
+    background: var(--primary);
+    color: #fff;
+    padding: 9px 22px;
+    border-radius: 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     cursor: pointer;
+    transition: background var(--transition), box-shadow var(--transition);
 }
 
 .anchor-button:hover {
-    background: RGB(80, 75, 200);
+    background: var(--primary-dark);
+    text-decoration: none;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(65,118,144,.40);
 }
 
-.td-button {
-    text-align: center;
-}
-
-.td-button:hover {
-    background: RGB(220, 100, 100);
-}
+.td-button { text-align: center; }
+.td-button:hover { background: var(--primary-light); }

@@ -11,21 +11,32 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Загружаем переменные из .env (если файл существует)
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1rj_f1($it+!-^#3b*(f#zc@&$#56ifucpnt_bt^ap+_(3v%db'
+# В продакшне перенести в переменную окружения: SECRET_KEY=your-key
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-1rj_f1($it+!-^#3b*(f#zc@&$#56ifucpnt_bt^ap+_(3v%db'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# В продакшне: DEBUG=False
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+# В продакшне: ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+_hosts_env = os.environ.get('ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = [h.strip() for h in _hosts_env.split(',') if h.strip()] or (['*'] if DEBUG else [])
 
 
 # Application definition
@@ -38,12 +49,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "base_app.apps.BaseAppConfig",
-    "pg_sql.apps.PgSqlConfig",
-    "wms_app.apps.WmsAppConfig"
+    # "pg_sql.apps.PgSqlConfig",   # не реализован — отключён до готовности
+    # "wms_app.apps.WmsAppConfig",  # не реализован — отключён до готовности
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,8 +69,7 @@ ROOT_URLCONF = 'SLEX_02.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,31 +100,19 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-
 LANGUAGE_CODE = 'ru-ru'
-
 TIME_ZONE = 'Europe/Moscow'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -121,14 +120,83 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-TMP_FOLDER = '/tmp_files/'
-
-# STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-TEMPLATE_DIR = [os.path.join(BASE_DIR, "templates")]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+TEMPLATE_DIR = [os.path.join(BASE_DIR, 'templates')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
+
+
+# Logging
+# https://docs.djangoproject.com/en/5.0/topics/logging/
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} {levelname} {name} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        # Консоль — только WARNING и выше, чтобы не блокировать процесс
+        # при выделении текста в Windows-терминале
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'level': 'WARNING',
+        },
+        # Файл — все HTTP-запросы и логи приложения
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'django.log',
+            'maxBytes': 10 * 1024 * 1024,  # 10 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+            'encoding': 'utf-8',
+        },
+        'file_server': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'server.log',
+            'maxBytes': 10 * 1024 * 1024,
+            'backupCount': 3,
+            'formatter': 'verbose',
+            'encoding': 'utf-8',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        # HTTP-запросы GET/POST — только в файл, не в консоль (причина зависаний)
+        'django.server': {
+            'handlers': ['file_server'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        # Ошибки Django (500, 404) — в файл
+        'django.request': {
+            'handlers': ['file', 'console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        # Логи приложения
+        'base_app': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+

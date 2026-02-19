@@ -4,6 +4,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'base_app/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'base_app/css/menu.css' %}">
     <link rel="stylesheet" href="{% static 'base_app/css/buttons.css' %}">
@@ -19,21 +20,17 @@
     <div id="menu-header">
         <div class="menu-header-left">
             {% if prefix %}
-                <a href="/{{ prefix }}/"><img src="{% static "base_app/images/slex-logo.png" %}" alt="SLEX"></a>
+                <a href="{% url 'main_filial' prefix %}"><img src="{% static "base_app/images/slex-logo.png" %}" alt="SLEX"></a>
             {% else %}
-                <a href="/"><img src="{% static "base_app/images/slex-logo.png" %}" alt="SLEX"></a>
+                <a href="{% url 'home' %}"><img src="{% static "base_app/images/slex-logo.png" %}" alt="SLEX"></a>
             {% endif %}
         </div>
         <div class="menu-header-center">
             {% if user.is_superuser %}
                 {% if title %}
-                    {% if user.is_superuser %}
-                        <h2><a href="/">{{ title }}</a></h2>
-                    {% else %}
-                        <h2><a href="/{{ prefix }}/">{{ title }}</a></h2>
-                    {% endif %}
+                    <h2><a href="{% url 'home' %}">{{ title }}</a></h2>
                 {% else %}
-                    <h2><a href="/">Главная</a></h2>
+                    <h2><a href="{% url 'home' %}">Главная</a></h2>
                 {% endif %}
             {% else %}
                 {% if title %}
@@ -68,9 +65,9 @@
     <div id="header">
         <div class="basic-div">
             {% if error_msg %}
-                <div class=" content-error-div">{{ msg }}</div>
+                <div class="content-error-div">{{ msg }}</div>
             {% else %}
-                <div class=" content-success-div">{{ msg }}</div>
+                <div class="content-success-div">{{ msg }}</div>
             {% endif %}
         </div>
     </div>

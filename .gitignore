@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Django
+db.sqlite3
+*.log
+logs/
+*.pot
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+# Environment variables (содержат секреты — не коммитить!)
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Static/media collected
+staticfiles/
+mediafiles/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Coverage
+.coverage
+htmlcov/

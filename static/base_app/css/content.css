@@ -1,83 +1,113 @@
-.content-div {
-    position: relative;
-}
-
-.content-error-div {
-    background: red;
-}
-
-.content-success-div {
-    color: green;
-}
+/* === Основной контент (стиль xxi-century.ru) === */
+.content-div { position: relative; }
 
 .operation-div {
+    margin: 14px 0;
+}
+
+.operation-div h4 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 10px;
-    margin-top: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
 }
 
 .navigation-div {
     display: flex;
-    justify-content: center
+    justify-content: center;
 }
 
+/* === Таблицы === */
 .content-table {
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 0;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: var(--shadow);
 }
 
 .content-table th {
-    background: RGB(150, 150, 150);
-    color: white;
-    height: 30px;
-    text-align: center;
-    padding: 5px 5px 10px 10px;
-}
-
-.content-table tr:nth-child(even) {
-    background: RGB(190, 190, 190);
-}
-
-.content-table tr:nth-child(odd) {
-    background: RGB(210, 210, 210);
-}
-
-.content-table tr:hover {
-    background: RGB(180, 180, 250);
-    cursor: pointer;
+    background: var(--bg-header);
+    color: var(--text-light);
+    font-weight: 700;
+    font-size: 11px;
+    text-align: left;
+    padding: 11px 14px;
+    user-select: none;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .content-table td {
-    padding: 5px 5px 10px 10px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    vertical-align: middle;
 }
 
-p.report-block {
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid RGB(200, 200, 200);
+.content-table tr:nth-child(even) td { background: #fafafa; }
+.content-table tr:nth-child(odd) td  { background: #ffffff; }
+
+.content-table tbody tr:hover td {
+    background: var(--primary-light);
+    cursor: pointer;
 }
 
 .content-table td > a {
     display: block;
     width: 100%;
-    color: black;
+    color: var(--primary);
     text-decoration: none;
+    font-weight: 600;
+}
+.content-table td > a:hover { text-decoration: underline; }
+
+/* Загрузка данных из pandas df.to_html */
+.content-table.dataframe thead tr th {
+    background: var(--bg-header);
+    color: var(--text-light);
+    font-weight: 700;
+    font-size: 11px;
+    text-align: left;
+    padding: 11px 14px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
 }
 
-
+/* .table - простой вариант */
 .table {
-	width: 100%;
-	margin-bottom: 20px;
-	border: 1px solid #dddddd;
-	border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 13px;
 }
 .table th {
-	font-weight: bold;
-	padding: 5px;
-	background: #efefef;
-	border: 1px solid #dddddd;
+    font-weight: 700;
+    padding: 9px 12px;
+    background: var(--bg-header);
+    color: var(--text-light);
+    border: none;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.8px;
 }
 .table td {
-	border: 1px solid #dddddd;
-	padding: 5px;
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+}
+
+p.report-block {
+    padding: 10px 14px;
+    background: #f9f9f9;
+    border-left: 3px solid var(--primary);
+    margin: 8px 0;
+    font-size: 13px;
 }

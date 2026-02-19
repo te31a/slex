@@ -1,32 +1,84 @@
-#sub-menu {
-    border-radius: 4px;
-    list-style: none;
-    padding-left: 0;
-    background: RGB(150, 150, 150);
-    max-height: max-content;
-    min-width: 250px;
-    max-width: max-content;
+/* === Карточки операций контракта (стиль xxi-century.ru) === */
+#contract-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
 }
 
-#sub-menu span {
-    border-radius: 4px;
-    border: 1px solid RGB(200, 200, 200);
-    background: RGB(150, 150, 150);
-    padding: 0 15px;
-    height: min-content;
-    line-height: 20px;
-    display: block;
-    cursor: pointer;
+.operation-div {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--primary);
+    border-radius: 0;
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: box-shadow var(--transition), transform var(--transition);
 }
 
-#sub-menu span:hover {
-    background: RGB(80, 75, 200);
+.operation-div:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 
-#sub-menu a {
-    display: block;
+.operation-div h4 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.operation-div form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.operation-div form > * {
     width: 100%;
-    color: black;
-    text-decoration: none;
 }
 
+.operation-div input[type=file] {
+    font-size: 12px;
+}
+
+.operation-div input[type=submit] {
+    width: 100%;
+    padding: 9px;
+}
+
+/* Заголовок страницы контракта */
+.page-section .basic-div h3 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-main);
+    padding-bottom: 14px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.operation-div span {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.operation-div span input[type=search] {
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.operation-div span input[type=submit] {
+    width: auto;
+    flex-shrink: 0;
+}

@@ -1,34 +1,34 @@
 {% extends 'base_app/contracts.html' %}
 
 {% block content %}
-    <div id="menu-header">
+    <div class="page-section">
         <div class="basic-div">
-            <h3>{{ contract.name }}</h3>
+            <h3 style="margin-bottom:16px; font-size:1.1rem;">{{ contract.name }}</h3>
             <div class="contract-menu" id="contract-menu">
                 <div class="operation-div">
                     <h4>Обработать заявки</h4>
                     <form enctype="multipart/form-data" method="post"
                           action="{{ contract.handler_form }}">
                         {% csrf_token %}
-                        <input type="file" name="file" id="file" accept=".xls, .xlsx">
+                        <input type="file" name="file" id="file_orders" accept=".xls, .xlsx">
                         <span class="span-button"><input type="submit" name="orders" value="Импорт"></span>
                     </form>
                 </div>
                 <div class="operation-div">
-                    <h4>Проверить товар на наличие в сетевом</h4>
+                    <h4>Проверить список товаров по Excel</h4>
                     <form enctype="multipart/form-data" method="post"
                           action="{{ contract.handler_form }}">
                         {% csrf_token %}
-                        <input type="file" name="file" id="file" accept=".xls, .xlsx">
-                        <span class="span-button"><input type="submit" value="Импорт"></span>
+                        <input type="file" name="file" id="file_product_all" accept=".xls, .xlsx">
+                        <span class="span-button"><input type="submit" name="product_all" value="Проверить список"></span>
                     </form>
                 </div>
                 <div class="operation-div">
-                    <h4>Проверить товар на наличие в сетевом</h4>
+                    <h4>Проверить товар по артикулу</h4>
                     <form enctype="multipart/form-data" method="post"
                           action="{{ contract.handler_form }}">
                         {% csrf_token %}
-                        <span><input type="search" name="art"><input type="submit" value="Проверить"></span>
+                        <span><input type="search" name="art" placeholder="Артикул"><input type="submit" name="product_one" value="Проверить"></span>
                     </form>
                 </div>
                 <div class="operation-div">
@@ -36,7 +36,7 @@
                     <form enctype="multipart/form-data" method="post"
                           action="{{ contract.handler_form }}">
                         {% csrf_token %}
-                        <span class="span-button"><input type="submit" value="Импорт"></span>
+                        <span class="span-button"><input type="submit" name="stocks" value="Загрузить"></span>
                     </form>
                 </div>
             </div>
@@ -46,7 +46,7 @@
 
 {% block data_order %}
     {% if result %}
-        <div id="menu-header">
+        <div class="page-section">
             <div class="basic-div">
                 <div class="operation-div">
                     <table class="content-table" id="products-table">
@@ -65,4 +65,14 @@
             </div>
         </div>
     {% endif %}
+    {% if df_res %}
+        <div class="page-section">
+            <div class="basic-div">
+                <div class="operation-div">
+                    {{ df_res | safe }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
+

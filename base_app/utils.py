@@ -88,9 +88,11 @@ def __create_datetime():
 
 
 def __create_name_file_save(filename, const_name, contract):
+    import os
     dt = __create_date()
     wb_path = contract.path_saved_order
-    _path = f'{wb_path}\\{const_name}_{filename}_{filename}_{dt}.xml'
+    # os.path.join — кроссплатформенный путь (работает на Windows и Linux)
+    _path = os.path.join(wb_path, f'{const_name}_{filename}_{dt}.xml')
     return _path
 
 
